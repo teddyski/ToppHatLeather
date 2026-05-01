@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import { getGalleryItems, getGalleryCategories } from "@/lib/content";
+
+const items = getGalleryItems();
+const categories = getGalleryCategories();
+---
+
+<Layout title="Gallery" description="Workshop photos and finished pieces.">
+  <section class="container-wide pt-16">
+    <h1 class="font-serif text-4xl md:text-5xl">Gallery</h1>
+    <p class="mt-3 max-w-prose text-bark-700">
+      Finished pieces, sketches, and shots from the bench.
+    </p>
+  </section>
+
+  <section class="container-wide mt-8">
+    <div class="flex flex-wrap gap-2 text-sm" data-filter-bar>
+      <button
+        type="button"
+        class="rounded-full border border-bark-800/20 px-4 py-1 uppercase tracking-wider text-bark-800 hover:border-tan-500 hover:text-tan-600 data-[active=true]:border-tan-500 data-[active=true]:bg-tan-500/10 data-[active=true]:text-tan-700"
+        data-category="all"
+        data-active="true"
+      >
+        All
+      </button>
+      {
+        categories.map((cat) => (
+          <button
+            type="button"
+            class="rounded-full border border-bark-800/20 px-4 py-1 uppercase tracking-wider text-bark-800 hover:border-tan-500 hover:text-tan-600 data-[active=true]:border-tan-500 data-[active=true]:bg-tan-500/10 data-[active=true]:text-tan-700"
+            data-category={cat}
+          >
+            {cat}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container-wide mt-10">
+    <div
+      class="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4"
+      data-gallery-grid
+    >
+      {
+        items.map((item) => (
+          <figure
+            class="group relative aspect-square overflow-hidden bg-bark-900"
+            data-category={item.category}
+          >
+            <Image
+              src={item.src}
+              alt={item.alt}
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+              quality={85}
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {item.caption && (
+              <figcaption class="absolute inset-x-0 bottom-0 translate-y-full bg-bark-900/80 p-3 text-xs text-cream-100 transition-transform duration-300 group-hover:translate-y-0">
+                {item.caption}
+              </figcaption>
+            )}
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-filter-bar] [data-category]",
+  );
+  const figures = document.querySelectorAll<HTMLElement>(
+    "[data-gallery-grid] [data-category]",
+  );
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.category!;
+      buttons.forEach((b) => b.setAttribute("data-active", String(b === btn)));
+      figures.forEach((fig) => {
+        const match = target === "all" || fig.dataset.category === target;
+        fig.style.display = match ? "" : "none";
+      });
+    });
+  });
+</script>

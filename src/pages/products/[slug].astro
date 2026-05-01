@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import { getAllProducts, getProductBySlug } from "@/lib/content";
+
+export function getStaticPaths() {
+  return getAllProducts().map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const product = getProductBySlug(slug!);
+
+if (!product) {
+  return Astro.redirect("/products");
+}
+---
+
+<Layout
+  title={product.title}
+  description={product.description[0] ?? `${product.title} — handmade leather mask.`}
+>
+  <article class="container-wide pt-12">
+    <a
+      href="/products"
+      class="text-sm uppercase tracking-wider text-bark-700 hover:text-tan-600"
+    >
+      ← All work
+    </a>
+
+    <div class="mt-6 grid gap-10 md:grid-cols-2 md:gap-16">
+      <div class="bg-bark-900">
+        <Image
+          src={product.heroImage}
+          alt={product.heroAlt}
+          widths={[600, 900, 1200, 1600]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          quality={90}
+          loading="eager"
+          class="h-full w-full object-cover"
+        />
+      </div>
+
+      <div class="md:pt-8">
+        <p class="text-xs uppercase tracking-[0.2em] text-tan-600">
+          {product.category}
+        </p>
+        <h1 class="mt-2 font-serif text-4xl md:text-5xl">{product.title}</h1>
+
+        <div class="mt-6 space-y-5">
+          {
+            product.description.map((para) => (
+              <p class="leading-relaxed text-bark-800">{para}</p>
+            ))
+          }
+        </div>
+
+        {
+          (product.materials || product.dimensions) && (
+            <dl class="mt-10 space-y-4 border-t border-bark-800/10 pt-6 text-sm">
+              {product.materials && (
+                <div class="flex gap-4">
+                  <dt class="w-28 shrink-0 uppercase tracking-wider text-bark-700">
+                    Materials
+                  </dt>
+                  <dd class="text-bark-800">{product.materials}</dd>
+                </div>
+              )}
+              {product.dimensions && (
+                <div class="flex gap-4">
+                  <dt class="w-28 shrink-0 uppercase tracking-wider text-bark-700">
+                    Dimensions
+                  </dt>
+                  <dd class="text-bark-800">{product.dimensions}</dd>
+                </div>
+              )}
+            </dl>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      product.gallery && product.gallery.length > 0 && (
+        <div class="mt-20 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {product.gallery.map((img) => (
+            <div class="aspect-[4/5] overflow-hidden bg-bark-900">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                widths={[600, 800, 1000]}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                quality={85}
+                class="h-full w-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </article>
+</Layout>

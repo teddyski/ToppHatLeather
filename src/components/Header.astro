@@ -1,0 +1,90 @@
+---
+interface Props {
+  siteName: string;
+}
+
+const { siteName } = Astro.props;
+const path = Astro.url.pathname;
+
+const links = [
+  { href: "/products", label: "Work" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="border-b border-bark-800/10 bg-cream-50/80 backdrop-blur">
+  <div class="container-wide flex items-center justify-between py-5">
+    <a
+      href="/"
+      class="font-serif text-xl tracking-wide text-bark-900 hover:text-tan-600"
+    >
+      {siteName}
+    </a>
+    <nav class="hidden gap-8 text-sm md:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              "tracking-wide uppercase transition-colors",
+              isActive(link.href)
+                ? "text-tan-600"
+                : "text-bark-700 hover:text-tan-600",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <details class="md:hidden">
+      <summary
+        class="cursor-pointer list-none rounded p-2 text-bark-700 hover:text-tan-600"
+        aria-label="Open menu"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </summary>
+      <div
+        class="absolute left-0 right-0 z-20 border-b border-bark-800/10 bg-cream-50 px-6 py-4 shadow-sm"
+      >
+        <ul class="flex flex-col gap-3 text-sm uppercase tracking-wide">
+          {
+            links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class:list={[
+                    isActive(link.href)
+                      ? "text-tan-600"
+                      : "text-bark-700 hover:text-tan-600",
+                  ]}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </details>
+  </div>
+</header>

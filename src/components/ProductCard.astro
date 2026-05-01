@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import type { Product } from "@/content/products";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<a href={`/products/${product.slug}`} class="group block">
+  <div class="aspect-[4/5] overflow-hidden bg-bark-900">
+    <Image
+      src={product.heroImage}
+      alt={product.heroAlt}
+      widths={[400, 600, 800, 1200]}
+      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      quality={85}
+      class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+  </div>
+  <div class="mt-4 flex items-baseline justify-between gap-4">
+    <h3 class="font-serif text-xl text-bark-900 group-hover:text-tan-600">
+      {product.title}
+    </h3>
+    <span class="text-xs uppercase tracking-wider text-bark-700/70">
+      {product.category}
+    </span>
+  </div>
+</a>

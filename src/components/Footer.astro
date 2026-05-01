@@ -1,0 +1,55 @@
+---
+import { getSettings } from "@/lib/content";
+
+const settings = getSettings();
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-bark-800/10 bg-bark-900 text-cream-100">
+  <div
+    class="container-wide flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between"
+  >
+    <div class="max-w-sm">
+      <p class="font-serif text-2xl text-cream-50">{settings.title}</p>
+      {
+        settings.tagline && (
+          <p class="mt-2 text-sm text-cream-200/70">{settings.tagline}</p>
+        )
+      }
+      {
+        settings.footerText && (
+          <p class="mt-4 text-sm text-cream-200/70">{settings.footerText}</p>
+        )
+      }
+    </div>
+    <div class="flex flex-col gap-2 text-sm">
+      {
+        settings.contactEmail && (
+          <a
+            href={`mailto:${settings.contactEmail}`}
+            class="text-cream-100 hover:text-tan-400"
+          >
+            {settings.contactEmail}
+          </a>
+        )
+      }
+      {
+        settings.socialLinks.map((s) => (
+          <a
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-cream-100 hover:text-tan-400"
+          >
+            {s.platform}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+  <div
+    class="border-t border-cream-100/10 py-4 text-center text-xs text-cream-200/50"
+  >
+    © {year} {settings.title}. All rights reserved.
+  </div>
+</footer>

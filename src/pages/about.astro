@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import workshop from "@/assets/about/workshop.jpg";
+import cyrWheel from "@/assets/about/cyr-wheel.png";
+---
+
+<Layout
+  title="About"
+  description="Hightopp Leather is the studio of Shawn Cook — leather artist, wildland firefighter, cyr wheel performer."
+>
+  <section class="container-prose pt-20 md:pt-28">
+    <p class="font-serif text-sm uppercase tracking-[0.3em] text-tan-600">
+      The studio
+    </p>
+    <h1 class="mt-6 font-serif text-4xl leading-tight md:text-6xl">
+      Shawn Cook makes things by hand.
+    </h1>
+
+    <div class="mt-10 space-y-6 text-lg leading-relaxed text-bark-800">
+      <p>
+        Leather artist. Wildland firefighter. World-class cyr wheel performer.
+        He picked up a needle and a swivel knife somewhere along the way and
+        never put them down.
+      </p>
+      <p>
+        The studio keeps its own time. Half-formed blocks on every surface, a
+        teapot warm too long, something always getting stitched before a show
+        that started an hour ago. Hats first, ceremony second, ordinary
+        somewhere far behind.
+      </p>
+      <p>
+        Shawn trained with monks in China as a young adult, then earned his way
+        through one of the world's leading circus schools. From there his life
+        forked. Half the year he's on a fireline somewhere out west, working
+        seventy-two hours straight in the dirt and the smoke. The other half
+        he's on stage, spinning inside a steel hoop the size of a man — moving
+        in a way most people only ever see once.
+      </p>
+    </div>
+
+    <figure class="my-14 grid grid-cols-1 gap-3 sm:grid-cols-5 sm:items-start sm:gap-4">
+      <Image
+        src={workshop}
+        alt="Shawn at his workbench, mid-stitch"
+        widths={[400, 600, 800]}
+        sizes="(min-width: 640px) 40vw, 100vw"
+        quality={90}
+        class="h-auto w-full sm:col-span-2"
+      />
+      <Image
+        src={cyrWheel}
+        alt="Shawn performing on a cyr wheel under stage lights"
+        widths={[600, 900, 1200]}
+        sizes="(min-width: 640px) 60vw, 100vw"
+        quality={90}
+        class="h-auto w-full sm:col-span-3"
+      />
+    </figure>
+
+    <div class="space-y-6 text-lg leading-relaxed text-bark-800">
+      <p>
+        Leather is what he comes home to. Top hats first — the kind of hats you
+        wear once and remember forever. Then bags, goggles, masks, crowns.
+        Anything a body can wear that needs to hold a story.
+      </p>
+      <p>
+        Each piece is hand-cut from a single sheet of vegetable-tanned leather.
+        Wet-formed over a sculpted block, saddle-stitched in waxed linen, dyed
+        and painted in the studio.
+      </p>
+      <p class="font-serif text-2xl text-bark-900 italic">
+        Built for stages, ceremonies, unbirthdays, and the kind of evenings
+        you don't forget.
+      </p>
+    </div>
+  </section>
+</Layout>

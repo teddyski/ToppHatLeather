@@ -1,0 +1,86 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import ProductCard from "@/components/ProductCard.astro";
+import {
+  getFeaturedProducts,
+  getRecentGalleryItems,
+} from "@/lib/content";
+
+const featured = getFeaturedProducts();
+const recent = getRecentGalleryItems(8);
+---
+
+<Layout>
+  <section class="container-wide pt-24 pb-20 md:pt-32 md:pb-28">
+    <p class="font-serif text-sm uppercase tracking-[0.3em] text-tan-600">
+      Hightopp Leather
+    </p>
+    <h1
+      class="mt-6 max-w-4xl font-serif text-5xl leading-[1.05] md:text-7xl"
+    >
+      Hand-built leather, made one piece at a time.
+    </h1>
+    <p class="mt-6 max-w-xl text-lg text-bark-700">
+      Hats, bags, goggles, and masks — cut, stitched, dyed, and shaped by hand
+      in studio.
+    </p>
+    <div class="mt-10 flex gap-8 text-sm uppercase tracking-wider">
+      <a
+        href="/products"
+        class="border-b border-tan-500 pb-1 text-tan-600 hover:text-tan-700"
+      >
+        See the work
+      </a>
+      <a
+        href="/contact"
+        class="border-b border-bark-800/30 pb-1 text-bark-700 hover:text-tan-600"
+      >
+        Commission a piece
+      </a>
+    </div>
+  </section>
+
+  <section class="container-wide">
+    <div class="mb-10 flex items-end justify-between border-t border-bark-800/10 pt-12">
+      <h2 class="font-serif text-3xl md:text-4xl">Featured</h2>
+      <a
+        href="/products"
+        class="text-sm uppercase tracking-wider text-bark-700 hover:text-tan-600"
+      >
+        All work →
+      </a>
+    </div>
+    <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((product) => <ProductCard product={product} />)}
+    </div>
+  </section>
+
+  <section class="container-wide mt-24">
+    <div class="mb-10 flex items-end justify-between">
+      <h2 class="font-serif text-3xl md:text-4xl">From the bench</h2>
+      <a
+        href="/gallery"
+        class="text-sm uppercase tracking-wider text-bark-700 hover:text-tan-600"
+      >
+        Full gallery →
+      </a>
+    </div>
+    <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+      {
+        recent.map((item) => (
+          <div class="aspect-square overflow-hidden bg-bark-900">
+            <Image
+              src={item.src}
+              alt={item.alt}
+              widths={[400, 600, 800]}
+              sizes="(min-width: 768px) 25vw, 50vw"
+              quality={85}
+              class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
